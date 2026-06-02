@@ -1,0 +1,32 @@
+/* 水墨风格基础样式 */
+.ink-background {
+  background: linear-gradient(135deg, #f5f5dc 0%, #faebd7 100%);
+  min-height: 100vh;
+}
+
+.ink-text {
+  font-family: 'Ma Shan Zheng', cursive;
+  color: #2c2c2c;
+}
+
+/* 水墨晕染效果 */
+.ink-blur {
+  filter: blur(0.5px);
+}
+
+/* 墨迹纹理 */
+.ink-texture {
+  position: relative;
+}
+
+.ink-texture::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.1;
+  pointer-events: none;
+}
