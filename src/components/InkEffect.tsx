@@ -24,7 +24,7 @@ export const InkEffect: React.FC<{
     <div
       className="ink-background ink-texture"
       style={{
-        filter: `blur(${blur}px)`,
+        filter: `blur(${blur}px) url(#ink-displacement)`,
         width: "100%",
         height: "100%",
         position: "relative",
