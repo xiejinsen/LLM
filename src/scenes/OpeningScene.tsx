@@ -78,7 +78,7 @@ export const OpeningScene: React.FC = () => {
           {[...Array(20)].map((_, i) => (
             <path
               key={i}
-              d={`M${100 * i} 0 L${100 * i + 50} ${50 + Math.random() * 100}`}
+              d={`M${100 * i} 0 L${100 * i + 50} ${50 + (i * 37) % 100}`}
               stroke="#2c2c2c"
               strokeWidth="2"
               fill="none"
