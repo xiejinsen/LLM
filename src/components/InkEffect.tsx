@@ -20,11 +20,14 @@ export const InkEffect: React.FC<{
     }
   );
 
+  // 持续的细微墨迹呼吸
+  const inkBreathe = Math.sin(frame * 0.03) * 0.15;
+
   return (
     <div
       className="ink-background ink-texture"
       style={{
-        filter: `blur(${blur}px) url(#ink-displacement)`,
+        filter: `blur(${blur + inkBreathe}px) url(#ink-displacement)`,
         width: "100%",
         height: "100%",
         position: "relative",

@@ -8,12 +8,12 @@ import { EndingScene } from "./scenes/EndingScene";
 export const HouYiSheRi: React.FC = () => {
   const { fps } = useVideoConfig();
 
-  // 场景时长配置（秒）
+  // 场景时长配置（秒）- 缩短空白段落
   const sceneDurations = {
-    opening: 8,    // 0-8秒
-    hero: 7,       // 8-15秒
-    action: 10,    // 15-25秒
-    ending: 5,     // 25-30秒
+    opening: 6,    // 0-6秒
+    hero: 4,       // 6-10秒
+    action: 8,     // 10-18秒
+    ending: 4,     // 18-22秒
   };
 
   return (

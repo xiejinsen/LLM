@@ -8,15 +8,28 @@ export const OpeningScene: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  // 热浪效果
+  // 持续热浪效果 - 三角波振荡
   const heatWave = interpolate(
     frame,
-    [0, 2 * fps, 4 * fps, 6 * fps],
-    [0, 5, -5, 0],
+    [0, 1 * fps, 2 * fps, 3 * fps, 4 * fps, 5 * fps],
+    [0, 4, -4, 3, -3, 0],
     {
       extrapolateRight: "clamp",
     }
   );
+
+  // 飘浮的灰烬/热浪粒子
+  const particles = Array.from({ length: 15 }, (_, i) => {
+    const cycle = (frame + i * 17) % (4 * fps);
+    const yOffset = interpolate(cycle, [0, 4 * fps], [0, -200], {
+      extrapolateRight: "clamp",
+    });
+    const xDrift = Math.sin((frame + i * 31) * 0.02) * 30;
+    const opacity = interpolate(cycle, [0, 3 * fps, 4 * fps], [0.6, 0.3, 0], {
+      extrapolateRight: "clamp",
+    });
+    return { i, yOffset, xDrift, opacity };
+  });
 
   // 十个太阳的位置（弧形排列）
   const sunPositions = [
@@ -44,6 +57,24 @@ export const OpeningScene: React.FC = () => {
           opacity: 0.8,
         }}
       />
+
+      {/* 飘浮的灰烬粒子 */}
+      {particles.map((p) => (
+        <div
+          key={p.i}
+          style={{
+            position: "absolute",
+            left: `${200 + (p.i * 110) % 1520}px`,
+            top: `${500 + p.yOffset}px`,
+            width: 4,
+            height: 4,
+            borderRadius: "50%",
+            background: "#FFA500",
+            opacity: p.opacity,
+            transform: `translateX(${p.xDrift}px)`,
+          }}
+        />
+      ))}
 
       {/* 十个太阳 */}
       {sunPositions.map((pos, index) => (

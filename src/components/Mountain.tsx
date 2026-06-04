@@ -22,6 +22,9 @@ export const Mountain: React.FC<{
     }
   );
 
+  // 山水画中远山淡淡的浮动感
+  const floatDrift = Math.sin(frame * 0.02 + (variant === "far" ? 0 : 1)) * 3;
+
   return (
     <div
       style={{
@@ -30,7 +33,7 @@ export const Mountain: React.FC<{
         left: 0,
         width: "100%",
         height: "100%",
-        transform: `translateX(${parallax}px)`,
+        transform: `translateX(${parallax + floatDrift}px)`,
       }}
     >
       <svg

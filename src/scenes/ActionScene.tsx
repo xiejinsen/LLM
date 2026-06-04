@@ -10,12 +10,6 @@ export const ActionScene: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  // 剩余太阳数量（逐渐减少）
-  const remainingSuns = Math.max(
-    1,
-    10 - Math.floor(frame / (1 * fps))
-  );
-
   // 太阳位置（被射中后消失）
   const sunPositions = [
     { x: 300, y: 200 },
@@ -30,8 +24,20 @@ export const ActionScene: React.FC = () => {
     { x: 960, y: 120 },
   ];
 
-  // 箭矢发射时间点
-  const arrowDelays = Array.from({ length: 9 }, (_, i) => (i + 1) * 0.8 * fps);
+  // 箭矢发射时间点（加快节奏）
+  const arrowDelays = Array.from({ length: 9 }, (_, i) => (i + 1) * 0.7 * fps);
+
+  // 撞击闪光
+  const impactFlashes = Array.from({ length: 9 }, (_, i) => {
+    const impactFrame = arrowDelays[i] + 0.4 * fps;
+    const flash = interpolate(
+      frame,
+      [impactFrame, impactFrame + 0.15 * fps],
+      [1, 0],
+      { extrapolateRight: "clamp", extrapolateLeft: "clamp" }
+    );
+    return flash;
+  });
 
   return (
     <InkEffect>
@@ -44,6 +50,25 @@ export const ActionScene: React.FC = () => {
           background: "linear-gradient(180deg, #FFD700 0%, #87CEEB 50%, #F5F5DC 100%)",
         }}
       />
+
+      {/* 撞击闪光 */}
+      {impactFlashes.map((flash, i) =>
+        flash > 0 && (
+          <div
+            key={i}
+            style={{
+              position: "absolute",
+              left: sunPositions[i].x - 40,
+              top: sunPositions[i].y - 40,
+              width: 80,
+              height: 80,
+              borderRadius: "50%",
+              background: "radial-gradient(circle, #FFFFFF 0%, transparent 70%)",
+              opacity: flash * 0.6,
+            }}
+          />
+        )
+      )}
 
       {/* 远山 */}
       <Mountain variant="far" y={650} />
@@ -75,7 +100,7 @@ export const ActionScene: React.FC = () => {
           endX={sunPositions[index].x}
           endY={sunPositions[index].y}
           delay={delay}
-          duration={0.4}
+          duration={0.3}
         />
       ))}
 
@@ -91,7 +116,7 @@ export const ActionScene: React.FC = () => {
           color: "#8B0000",
         }}
       >
-        已射落 {Math.min(9, Math.floor(frame / (0.8 * fps)))} 个太阳
+        已射落 {Math.min(9, Math.floor(frame / (0.7 * fps)))} 个太阳
       </div>
     </InkEffect>
   );

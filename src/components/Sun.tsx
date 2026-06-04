@@ -23,6 +23,9 @@ export const Sun: React.FC<{
     extrapolateRight: "extend",
   });
 
+  // 太阳呼吸脉动
+  const breathe = 1 + Math.sin(frame * 0.08) * 0.04;
+
   // 射中时的缩放效果
   const shootScale = isShooting
     ? interpolate(
@@ -36,7 +39,7 @@ export const Sun: React.FC<{
       )
     : 1;
 
-  const scale = entrance * shootScale;
+  const scale = entrance * shootScale * breathe;
 
   return (
     <div
@@ -81,7 +84,7 @@ export const Sun: React.FC<{
           borderRadius: "50%",
           background:
             "radial-gradient(circle, #FFD700 0%, #FFA500 50%, #FF8C00 100%)",
-          boxShadow: "0 0 30px #FFD700, 0 0 60px #FFA500",
+          boxShadow: `0 0 ${30 + breathe * 10}px #FFD700, 0 0 ${60 + breathe * 20}px #FFA500`,
         }}
       />
     </div>
